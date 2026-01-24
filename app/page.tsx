@@ -1,9 +1,16 @@
-import MatchSeeder from '@/components/MatchSeeder/MatchSeeder';
+import { FixturesList } from '@/components/ui/FixturesList';
+import { Countdown } from '@/components/ui/Countdown';
+import { containerClassName } from '@/lib/utils';
+import Header from '@/components/ui/Header';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-950 p-6 font-sans text-slate-200">
-      <MatchSeeder />
+    <main className="min-h-dvh">
+      <Header />
+      <Countdown />
+      <div className={containerClassName}>
+        <FixturesList />
+      </div>
     </main>
   );
 }
