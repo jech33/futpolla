@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
 import { AuthGuard } from '@/components/auth/AuthGuard';
+import { NextHydrationWaiter } from '@/components/auth/NextHydrationWaiter';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -24,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${poppins.className} antialiased`}>
-        <AuthGuard>{children}</AuthGuard>
+        <NextHydrationWaiter>
+          <AuthGuard>{children}</AuthGuard>
+        </NextHydrationWaiter>
       </body>
     </html>
   );

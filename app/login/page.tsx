@@ -9,7 +9,7 @@ export default function Login() {
     await login();
   };
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-5 bg-white">
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-5 bg-white">
       <h1 className="text-4xl font-black tracking-tighter text-black italic">
         FUT<span className="text-green-500">POLLA</span>
       </h1>
@@ -20,6 +20,6 @@ export default function Login() {
       >
         Google Login
       </button>
-    </div>
+    </main>
   );
 }

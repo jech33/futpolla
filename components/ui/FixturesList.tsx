@@ -17,7 +17,7 @@ export function FixturesList() {
   return (
     <>
       {isLoadingFixtures ? (
-        <Spinner className="mx-auto size-24 text-slate-300" />
+        <Spinner className="mx-auto my-12 size-24 text-slate-300" />
       ) : (
         <div className="space-y-4">
           {fixtures.map((match, index) => {

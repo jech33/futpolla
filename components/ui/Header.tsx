@@ -14,16 +14,16 @@ export default function Header() {
   const logout = useAuthStore((state) => state.logout);
   const user = useAuthStore((state) => state.user);
   return (
-    <header className={'bg-black'}>
+    <header className="sticky top-0 bg-black">
       <div
-        className={cn(containerClassName, 'flex items-center justify-between gap-2 bg-black py-8')}
+        className={cn(containerClassName, 'flex items-center justify-between gap-2 bg-black py-4')}
       >
-        <h1 className="text-3xl font-bold tracking-tighter text-white italic">
+        <h1 className="text-2xl font-bold tracking-tighter text-white italic">
           FUT<span className="text-green-500">POLLA</span>
         </h1>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="size-12! cursor-pointer">
+            <Avatar className="size-10! cursor-pointer">
               <AvatarImage src={user?.photoURL} alt="user-avatar" referrerPolicy="no-referrer" />
               <AvatarFallback>
                 <UserCircleIcon />

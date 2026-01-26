@@ -1,14 +1,12 @@
 import { FixturesList } from '@/components/ui/FixturesList';
 import { Countdown } from '@/components/ui/Countdown';
-import { containerClassName } from '@/lib/utils';
-import Header from '@/components/ui/Header';
+import { cn, containerClassName } from '@/lib/utils';
 
 export default function Home() {
   return (
-    <main className="min-h-dvh">
-      <Header />
+    <main className="flex flex-1 flex-col">
       <Countdown />
-      <div className={containerClassName}>
+      <div className={cn(containerClassName, 'flex flex-1 flex-col')}>
         <FixturesList />
       </div>
     </main>

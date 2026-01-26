@@ -43,7 +43,6 @@ export function Countdown() {
     return () => clearInterval(timer);
   }, []);
 
-  // Renderizar un "esqueleto" o nada hasta que esté montado en el cliente
   if (!isMounted || !competition) return null;
 
   return (
@@ -76,9 +75,7 @@ export function Countdown() {
   );
 }
 
-// Subcomponente para cada cajita (para no repetir código)
 function TimeBox({ value, label }: { value: number; label: string }) {
-  // PadStart para que siempre sean 2 dígitos (05 en vez de 5)
   const formattedValue = value.toString().padStart(2, '0');
 
   return (
