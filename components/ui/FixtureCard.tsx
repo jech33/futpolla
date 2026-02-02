@@ -20,7 +20,7 @@ export function FixtureCard({ match }: FixtureCardProps) {
   return (
     <Card className="gap-3">
       <CardContent className="px-0">
-        <div className="flex items-center justify-center gap-1 sm:gap-5 md:text-lg">
+        <div className="flex items-center justify-center gap-3 sm:gap-5 md:text-lg">
           <div className="flex flex-1 flex-wrap-reverse items-center justify-end gap-2">
             <span className="md:hidden">{homeTeam.code}</span>
             <span className="hidden md:block">{homeTeam.name}</span>

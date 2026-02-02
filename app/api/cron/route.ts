@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase/admin';
-import { Fixture, GroupTable } from '@/types';
+import { Fixture, GroupTable, Team } from '@/types';
 
 const COMPETITION_ID_FOOTBALL_DATA_API = 'WC'; // 'WC' FOR WORLD CUP 'CL' FOR CHAMPIONS LEAGUE
 const FIRESTORE_COMPETITION_ID = 'wc-2026';
@@ -78,24 +78,24 @@ export async function GET(request: Request) {
           },
 
           score: {
-            winner: apiMatch.score.winner,
-            duration: apiMatch.score.duration,
+            winner: apiMatch.score?.winner ?? null,
+            duration: apiMatch.score?.duration ?? null,
             fullTime: {
-              home: apiMatch.score.fullTime.home,
-              away: apiMatch.score.fullTime.away,
+              home: apiMatch.score?.fullTime?.home ?? null,
+              away: apiMatch.score?.fullTime?.away ?? null,
             },
             halfTime: {
-              home: apiMatch.score.halfTime.home,
-              away: apiMatch.score.halfTime.away,
+              home: apiMatch.score?.halfTime?.home ?? null,
+              away: apiMatch.score?.halfTime?.away ?? null,
             },
             regularTime: {
-              home: apiMatch.score.regularTime.home,
-              away: apiMatch.score.regularTime.away,
+              home: apiMatch.score?.regularTime?.home ?? null,
+              away: apiMatch.score?.regularTime?.away ?? null,
             },
-            penalties: apiMatch.score.penalties
+            penalties: apiMatch.score?.penalties
               ? {
-                  home: apiMatch.score.penalties.home,
-                  away: apiMatch.score.penalties.away,
+                  home: apiMatch.score.penalties.home ?? null,
+                  away: apiMatch.score.penalties.away ?? null,
                 }
               : null,
           },
@@ -134,9 +134,9 @@ export async function GET(request: Request) {
                 team: {
                   id: row.team.id,
                   name: row.team.name,
-                  tla: row.team.tla,
-                  crest: row.team.crest,
-                },
+                  code: row.team.tla,
+                  logo: row.team.crest,
+                } as Team,
                 playedGames: row.playedGames,
                 form: row.form,
                 won: row.won,

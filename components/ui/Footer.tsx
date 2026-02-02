@@ -13,20 +13,19 @@ export function Footer() {
       icon: CalendarDays,
     },
     {
-      label: 'Grupos',
-      href: '/groups', // Tendrás que crear esta página
+      label: 'Llaves/Grupos',
+      href: '/standings',
       icon: TableProperties,
     },
     {
       label: 'Ranking',
-      href: '/leaderboard', // Y esta también
+      href: '/leaderboard',
       icon: Trophy,
     },
   ];
 
   return (
-    <div className="sticky bottom-0 z-50 mt-12">
-      {/* Fondo con Blur (Glassmorphism) */}
+    <div className="sticky bottom-0 z-50">
       <div className="absolute inset-0 bg-black" />
 
       <nav className="pb-safe relative container mx-auto flex h-16 items-center justify-around">

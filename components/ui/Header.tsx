@@ -14,7 +14,7 @@ export default function Header() {
   const logout = useAuthStore((state) => state.logout);
   const user = useAuthStore((state) => state.user);
   return (
-    <header className="sticky top-0 bg-black">
+    <header className="sticky top-0 z-9999 bg-black">
       <div
         className={cn(containerClassName, 'flex items-center justify-between gap-2 bg-black py-4')}
       >

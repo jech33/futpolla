@@ -9,7 +9,7 @@ export default function Home({
   return (
     <div className="flex min-h-dvh flex-col">
       <Header />
-      {children}
+      <div className="flex flex-1 flex-col">{children}</div>
       <Footer />
     </div>
   );

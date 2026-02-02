@@ -14,41 +14,39 @@ export function FixturesList() {
     fetchFixtures();
   }, []);
 
+  if (fixtures.length === 0 && isLoadingFixtures) {
+    return <Spinner className="mx-auto my-12 size-24 text-slate-300" />;
+  }
+
   return (
-    <>
-      {isLoadingFixtures ? (
-        <Spinner className="mx-auto my-12 size-24 text-slate-300" />
-      ) : (
-        <div className="space-y-4">
-          {fixtures.map((match, index) => {
-            const matchDate = new Date(match.date);
-            const currentDate = matchDate.toLocaleDateString(undefined, {
-              day: '2-digit',
-              month: 'short',
-            });
-            const previousDate =
-              index > 0
-                ? new Date(fixtures[index - 1].date).toLocaleDateString(undefined, {
-                    day: '2-digit',
-                    month: 'short',
-                  })
-                : null;
-            const shouldRenderDate = currentDate !== previousDate;
-            return (
-              <div key={match.id}>
-                {shouldRenderDate && (
-                  <h2 className="mt-8 pb-2 text-start text-lg">
-                    {matchDate.toLocaleDateString('en-US', {
-                      dateStyle: 'full',
-                    })}
-                  </h2>
-                )}
-                <FixtureCard match={match} />
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </>
+    <div className="space-y-4">
+      {fixtures.map((match, index) => {
+        const matchDate = new Date(match.date);
+        const currentDate = matchDate.toLocaleDateString(undefined, {
+          day: '2-digit',
+          month: 'short',
+        });
+        const previousDate =
+          index > 0
+            ? new Date(fixtures[index - 1].date).toLocaleDateString(undefined, {
+                day: '2-digit',
+                month: 'short',
+              })
+            : null;
+        const shouldRenderDate = currentDate !== previousDate;
+        return (
+          <div key={match.id}>
+            {shouldRenderDate && (
+              <h2 className="mt-8 pb-2 text-start text-lg">
+                {matchDate.toLocaleDateString('en-US', {
+                  dateStyle: 'full',
+                })}
+              </h2>
+            )}
+            <FixtureCard match={match} />
+          </div>
+        );
+      })}
+    </div>
   );
 }
