@@ -1,21 +1,22 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useFutStore } from '@/stores/useFutStore';
 import { GroupTable } from './GroupTable';
 import { Spinner } from './Spinner';
+import { useStandings } from '@/hooks/queries/useStandings';
 
 export function StandingsList() {
-  const standings = useFutStore((state) => state.standings);
-  const isLoadingStandings = useFutStore((state) => state.isLoadingStandings);
-  const fetchStandings = useFutStore((state) => state.fetchStandings);
+  const { data: standings, isLoading: isLoadingStandings, isError, error } = useStandings();
 
-  useEffect(() => {
-    fetchStandings();
-  }, []);
-
-  if (isLoadingStandings && standings.length === 0) {
+  if (isLoadingStandings) {
     return <Spinner className="mx-auto my-12 size-24 text-slate-300" />;
+  }
+
+  if (isError) {
+    return <div className="text-center text-red-500">Error: {error.message}</div>;
+  }
+
+  if (!standings) {
+    return <div className="text-center text-gray-500">No standings available</div>;
   }
 
   return (

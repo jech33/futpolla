@@ -1,44 +1,47 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useAuthStore } from '@/stores/useAuthStore'; // 👈 Usamos el store ligero
 import { usePathname, useRouter } from 'next/navigation';
 import { Spinner } from '../ui/Spinner';
 
-const PUBLIC_ROUTES = ['/login']; // Rutas donde NO exigimos auth
+const PUBLIC_ROUTES = ['/login'];
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { user, isLoading, initializeAuth } = useAuthStore();
+  const { isAuthenticated, isLoadingSession, initializeSession } = useAuthStore();
+
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const unsubscribe = initializeAuth();
+    const unsubscribe = initializeSession();
     return () => unsubscribe();
-  }, [initializeAuth]);
+  }, [initializeSession]);
 
   useEffect(() => {
-    if (!isLoading) {
-      if (!user && !PUBLIC_ROUTES.includes(pathname)) {
+    if (!isLoadingSession) {
+      const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+
+      if (!isAuthenticated && !isPublicRoute) {
         router.push('/login');
-      } else if (user && pathname === '/login') {
+      } else if (isAuthenticated && pathname === '/login') {
         router.push('/');
       }
     }
-  }, [user, isLoading, pathname, router]);
+  }, [isAuthenticated, isLoadingSession, pathname, router]);
 
-  if (isLoading && !user) {
+  if (isLoadingSession) {
     return (
-      <div className="flex min-h-screen animate-pulse flex-col items-center justify-center gap-5 bg-white">
-        <h1 className="text-4xl font-black tracking-tighter text-black italic">
+      <div className="flex min-h-screen animate-pulse flex-col items-center justify-center gap-5 bg-slate-950">
+        <h1 className="text-4xl font-black tracking-tighter text-white italic">
           FUT<span className="text-green-500">POLLA</span>
         </h1>
-        <Spinner className="size-12 text-gray-500" />
+        <Spinner className="size-12 text-green-500" />
       </div>
     );
   }
 
-  if (!user && !PUBLIC_ROUTES.includes(pathname)) {
+  if (!isAuthenticated && !PUBLIC_ROUTES.includes(pathname)) {
     return null;
   }
 

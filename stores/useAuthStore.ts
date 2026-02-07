@@ -1,93 +1,33 @@
 import { create } from 'zustand';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { auth } from '@/lib/firebase/config';
 import { persist } from 'zustand/middleware';
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  User,
-} from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { auth, db } from '@/lib/firebase/config';
-import { UserProfile, UserRole } from '@/types';
 
 interface AuthState {
-  user: UserProfile | null;
   firebaseUser: User | null;
-  isLoading: boolean;
+  isAuthenticated: boolean;
+  isLoadingSession: boolean;
 
-  loginWithGoogle: () => Promise<void>;
-  logout: () => Promise<void>;
-  initializeAuth: () => () => void;
+  initializeSession: () => () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      user: null,
       firebaseUser: null,
-      isLoading: true,
+      isAuthenticated: false,
+      isLoadingSession: true,
 
-      loginWithGoogle: async () => {
-        try {
-          const provider = new GoogleAuthProvider();
-          await signInWithPopup(auth, provider);
-        } catch (error) {
-          console.error('Login error:', error);
-        }
-      },
-
-      logout: async () => {
-        await signOut(auth);
-        set({ user: null, firebaseUser: null });
-      },
-
-      initializeAuth: () => {
-        return onAuthStateChanged(auth, async (currentUser) => {
-          set({ isLoading: true });
-
-          if (!currentUser) {
-            set({ user: null, firebaseUser: null, isLoading: false });
-            return;
-          }
-
-          try {
-            const userRef = doc(db, 'users', currentUser.uid);
-            const userSnap = await getDoc(userRef);
-
-            let userProfile: UserProfile;
-
-            if (userSnap.exists()) {
-              userProfile = userSnap.data() as UserProfile;
-            } else {
-              userProfile = {
-                uid: currentUser.uid,
-                email: currentUser.email || '',
-                displayName: currentUser.displayName || '',
-                photoURL: currentUser.photoURL || '',
-                totalPoints: 0,
-                ranking: 999, // Ranking temporal
-                role: UserRole.USER,
-              };
-
-              await setDoc(userRef, userProfile);
-            }
-
-            set({
-              firebaseUser: currentUser,
-              user: userProfile,
-              isLoading: false,
-            });
-          } catch (error) {
-            console.error('Error syncing user profile:', error);
-            set({ user: null, firebaseUser: null, isLoading: false });
-          }
+      initializeSession: () => {
+        return onAuthStateChanged(auth, (user) => {
+          set({
+            firebaseUser: user,
+            isAuthenticated: !!user,
+            isLoadingSession: false,
+          });
         });
       },
     }),
-    {
-      name: 'auth-storage',
-      partialize: (state) => ({ user: state.user, isLoading: state.isLoading }),
-    }
+    { name: 'user-storage' }
   )
 );

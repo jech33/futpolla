@@ -1,21 +1,22 @@
 'use client';
 
-import { useEffect } from 'react';
 import { FixtureCard } from './FixtureCard';
-import { useFutStore } from '@/stores/useFutStore';
 import { Spinner } from './Spinner';
+import { useFixtures } from '@/hooks/queries/useFixtures';
 
 export function FixturesList() {
-  const fixtures = useFutStore((state) => state.fixtures);
-  const isLoadingFixtures = useFutStore((state) => state.isLoadingFixtures);
-  const fetchFixtures = useFutStore((state) => state.fetchFixtures);
+  const { data: fixtures, isLoading: isLoadingFixtures, isError, error } = useFixtures();
 
-  useEffect(() => {
-    fetchFixtures();
-  }, []);
-
-  if (fixtures.length === 0 && isLoadingFixtures) {
+  if (isLoadingFixtures) {
     return <Spinner className="mx-auto my-12 size-24 text-slate-300" />;
+  }
+
+  if (isError) {
+    return <div className="text-center text-red-500">Error: {error.message}</div>;
+  }
+
+  if (!fixtures) {
+    return <div className="text-center text-gray-500">No fixtures available</div>;
   }
 
   return (

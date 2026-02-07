@@ -1,12 +1,19 @@
 'use client';
 
-import { useAuthStore } from '@/stores/useAuthStore';
+import { cn } from '@/lib/utils';
+import { loginWithGoogle } from '@/services/authServices';
+import { useState } from 'react';
 
 export default function Login() {
-  const login = useAuthStore((state) => state.loginWithGoogle);
-  const loadingAuth = useAuthStore((state) => state.isLoading);
+  const [loading, setLoading] = useState(false);
   const handleLogin = async () => {
-    await login();
+    setLoading(true);
+    try {
+      await loginWithGoogle();
+    } catch (error) {
+      console.error('Login error:', error);
+      setLoading(false);
+    }
   };
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-5 bg-white">
@@ -15,8 +22,11 @@ export default function Login() {
       </h1>
       <button
         onClick={handleLogin}
-        disabled={loadingAuth}
-        className="cursor-pointer rounded bg-green-500 px-6 py-3 font-semibold text-white hover:bg-green-600 disabled:opacity-50"
+        disabled={loading}
+        className={cn(
+          'cursor-pointer rounded bg-green-500 px-6 py-3 font-semibold text-white hover:bg-green-600',
+          'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-green-500'
+        )}
       >
         Google Login
       </button>
