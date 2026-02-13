@@ -1,4 +1,4 @@
-import { initializeApp, getApps, cert, getApp } from 'firebase-admin/app';
+import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
 const serviceAccount = {

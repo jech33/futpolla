@@ -1,26 +1,25 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore'; // 👈 Usamos el store ligero
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+import { useInitializeAuth } from '@/hooks/useInitializeAuth';
+import { PUBLIC_ROUTES } from '@/lib/constants/routes';
+import { useAuthStore } from '@/stores/useAuthStore';
+
 import { Spinner } from '../ui/Spinner';
 
-const PUBLIC_ROUTES = ['/login'];
-
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoadingSession, initializeSession } = useAuthStore();
+  // Initialize Firebase auth listener
+  useInitializeAuth();
 
+  const { isAuthenticated, isLoadingSession } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const unsubscribe = initializeSession();
-    return () => unsubscribe();
-  }, [initializeSession]);
-
-  useEffect(() => {
     if (!isLoadingSession) {
-      const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+      const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname === route);
 
       if (!isAuthenticated && !isPublicRoute) {
         router.push('/login');
@@ -41,7 +40,9 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!isAuthenticated && !PUBLIC_ROUTES.includes(pathname)) {
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname === route);
+
+  if (!isAuthenticated && !isPublicRoute) {
     return null;
   }
 

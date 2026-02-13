@@ -1,31 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAuthStore } from '@/stores/useAuthStore';
-import { getUserProfile, syncUserProfile } from '@/services/authServices';
 
+import { QUERY_CONFIG, QUERY_KEYS } from '@/lib/constants/query';
+import { getUserProfile } from '@/services/authServices';
+import { useAuthStore } from '@/stores/useAuthStore';
+
+/**
+ * Hook to fetch the current user's profile
+ * Note: User profile creation is now handled by the useSyncUserProfile mutation
+ */
 export function useCurrentUser() {
   const { firebaseUser, isAuthenticated } = useAuthStore();
 
-  const query = useQuery({
-    queryKey: ['user-profile', firebaseUser?.uid],
-
-    enabled: isAuthenticated && !!firebaseUser?.uid,
-
+  return useQuery({
+    queryKey: QUERY_KEYS.userProfile(firebaseUser?.uid),
     queryFn: async () => {
-      if (!firebaseUser) return null;
-
-      const profile = await getUserProfile(firebaseUser.uid);
-
-      if (!profile) {
-        return await syncUserProfile(firebaseUser);
-      }
-
-      return profile;
+      if (!firebaseUser?.uid) return null;
+      return await getUserProfile(firebaseUser.uid);
     },
-
-    staleTime: 1000 * 60 * 60,
-    gcTime: 1000 * 60 * 60 * 24,
-    refetchOnWindowFocus: true,
+    enabled: isAuthenticated && !!firebaseUser?.uid,
+    ...QUERY_CONFIG.userProfile,
   });
-
-  return query;
 }

@@ -1,8 +1,11 @@
-import { Fixture } from '@/types';
-import { Card, CardContent, CardFooter, CardHeader } from './Card';
-import { specialCharsToSpace } from '@/lib/helpers/specialCharsToSpace';
-import { PredictionStepper } from './PredictionStepper';
 import { Clock } from 'lucide-react';
+import Image from 'next/image';
+
+import { specialCharsToSpace } from '@/lib/helpers/specialCharsToSpace';
+import { Fixture } from '@/types';
+
+import { Card, CardContent, CardFooter, CardHeader } from './Card';
+import { PredictionStepper } from './PredictionStepper';
 
 type FixtureCardProps = {
   match: Fixture;
@@ -39,13 +42,25 @@ export function FixtureCard({ match }: FixtureCardProps) {
             <span className="md:hidden">{homeTeam.code}</span>
             <span className="hidden md:block">{homeTeam.name}</span>
             {homeTeam.logo && (
-              <img src={homeTeam.logo} alt={homeTeam.name} className="h-auto w-7 sm:w-8" />
+              <Image
+                src={homeTeam.logo}
+                alt={homeTeam.name}
+                width={12}
+                height={12}
+                className="h-auto w-7 sm:w-8"
+              />
             )}
           </div>
           <div className="text-center text-lg font-medium md:text-2xl">VS</div>
           <div className="flex flex-1 items-center justify-start gap-2">
             {awayTeam.logo && (
-              <img src={awayTeam.logo} alt={awayTeam.name} className="h-auto w-7 sm:w-8" />
+              <Image
+                src={awayTeam.logo}
+                alt={awayTeam.name}
+                width={12}
+                height={12}
+                className="h-auto w-7 sm:w-8"
+              />
             )}
             <span className="md:hidden">{awayTeam.code}</span>
             <span className="hidden md:block">{awayTeam.name}</span>
@@ -53,7 +68,7 @@ export function FixtureCard({ match }: FixtureCardProps) {
         </div>
       </CardContent>
       <CardFooter className="justify-center px-0 text-center text-xs tracking-widest capitalize">
-        <PredictionStepper matchId={match.id} onSave={() => {}} isLocked={false} />
+        <PredictionStepper matchId={match.id} isLocked={false} />
       </CardFooter>
     </Card>
   );

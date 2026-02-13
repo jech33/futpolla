@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { Minus, Plus } from 'lucide-react';
+import { useCallback, useState } from 'react';
+
+import { PREDICTION_CONSTRAINTS } from '@/lib/constants/validation';
 import { cn } from '@/lib/utils';
 
 interface PredictionProps {
   matchId: string;
   initialHome?: number;
   initialAway?: number;
-  onSave: (h: number, a: number) => void;
   isLocked?: boolean;
 }
 
@@ -22,20 +23,35 @@ const styles = {
 };
 
 export function PredictionStepper({
-  matchId,
   initialHome = 0,
   initialAway = 0,
-  onSave,
   isLocked = false,
 }: PredictionProps) {
   const [homeScore, setHomeScore] = useState(initialHome);
   const [awayScore, setAwayScore] = useState(initialAway);
-  const [isSaving, setIsSaving] = useState(false);
-  const handleChange = (team: 'home' | 'away', delta: number) => {
-    if (isLocked) return;
-    if (team === 'home') setHomeScore(Math.max(0, Math.min(15, homeScore + delta)));
-    if (team === 'away') setAwayScore(Math.max(0, Math.min(15, awayScore + delta)));
-  };
+
+  const adjustScore = useCallback((currentScore: number, delta: number) => {
+    return Math.max(
+      PREDICTION_CONSTRAINTS.minScore,
+      Math.min(PREDICTION_CONSTRAINTS.maxScore, currentScore + delta)
+    );
+  }, []);
+
+  const handleHomeDecrease = useCallback(() => {
+    if (!isLocked) setHomeScore((s) => adjustScore(s, -1));
+  }, [isLocked, adjustScore]);
+
+  const handleHomeIncrease = useCallback(() => {
+    if (!isLocked) setHomeScore((s) => adjustScore(s, 1));
+  }, [isLocked, adjustScore]);
+
+  const handleAwayDecrease = useCallback(() => {
+    if (!isLocked) setAwayScore((s) => adjustScore(s, -1));
+  }, [isLocked, adjustScore]);
+
+  const handleAwayIncrease = useCallback(() => {
+    if (!isLocked) setAwayScore((s) => adjustScore(s, 1));
+  }, [isLocked, adjustScore]);
 
   const homeWinning = homeScore > awayScore;
   const awayWinning = awayScore > homeScore;
@@ -55,13 +71,23 @@ export function PredictionStepper({
       <div className="flex items-center gap-2">
         {/* LOCAL TEAM*/}
         <div className={cn(styles.stepperBase, homeWinning ? 'bg-green-100' : '')}>
-          <button onClick={() => handleChange('home', -1)} className={styles.button}>
+          <button
+            onClick={handleHomeDecrease}
+            className={styles.button}
+            aria-label="Decrease home team score"
+            disabled={isLocked}
+          >
             <Minus size={14} strokeWidth={3} />
           </button>
           <span className={cn(styles.score, homeWinning ? 'text-green-600' : 'text-black')}>
             {homeScore}
           </span>
-          <button onClick={() => handleChange('home', 1)} className={styles.button}>
+          <button
+            onClick={handleHomeIncrease}
+            className={styles.button}
+            aria-label="Increase home team score"
+            disabled={isLocked}
+          >
             <Plus size={14} strokeWidth={3} />
           </button>
         </div>
@@ -71,13 +97,23 @@ export function PredictionStepper({
 
         {/* AWAY TEAM */}
         <div className={`${styles.stepperBase} ${awayWinning ? 'bg-green-100' : ''}`}>
-          <button onClick={() => handleChange('away', -1)} className={styles.button}>
+          <button
+            onClick={handleAwayDecrease}
+            className={styles.button}
+            aria-label="Decrease away team score"
+            disabled={isLocked}
+          >
             <Minus size={14} strokeWidth={3} />
           </button>
           <span className={cn(styles.score, awayWinning ? 'text-green-600' : 'text-black')}>
             {awayScore}
           </span>
-          <button onClick={() => handleChange('away', 1)} className={styles.button}>
+          <button
+            onClick={handleAwayIncrease}
+            className={styles.button}
+            aria-label="Increase away team score"
+            disabled={isLocked}
+          >
             <Plus size={14} strokeWidth={3} />
           </button>
         </div>

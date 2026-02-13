@@ -10,6 +10,7 @@ export const NextHydrationWaiter = ({
 
   // Wait till Next.js rehydration completes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsHydrated(true);
   }, []);
 

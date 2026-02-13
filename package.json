@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint --max-warnings=0",
     "commit": "czg"
   },
   "dependencies": {
@@ -18,16 +18,18 @@
     "firebase": "12.8.0",
     "firebase-admin": "13.6.0",
     "lucide-react": "0.563.0",
-    "next": "16.1.4",
+    "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "shadcn": "3.7.0",
     "tailwind-merge": "3.4.0",
+    "zod": "4.3.6",
     "zustand": "5.0.10"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.1.18",
-    "@tanstack/eslint-plugin-query": "5.91.4",
+    "@tanstack/eslint-plugin-query": "^5.91.4",
+    "@trivago/prettier-plugin-sort-imports": "6.0.2",
     "@types/node": "20.19.30",
     "@types/react": "19.2.9",
     "@types/react-dom": "19.2.3",
@@ -35,6 +37,7 @@
     "eslint": "9.39.2",
     "eslint-config-next": "16.1.4",
     "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-prettier": "5.5.5",
     "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "0.7.2",
     "tailwindcss": "4.1.18",

@@ -1,5 +1,5 @@
 export type Competition = {
-  id: string;
+  id: string | number;
   name: string;
   code: string;
   logo: string;
@@ -14,11 +14,11 @@ export type Season = {
 };
 
 export type Team = {
-  id?: string;
-  name: string;
-  code: string;
+  id?: string | number | null;
+  name?: string | null;
+  code?: string | null;
   type?: string;
-  logo?: string;
+  logo?: string | null;
 };
 
 export type Score = {
@@ -74,14 +74,14 @@ export enum MatchStatus {
 export type Fixture = {
   id: string;
   competition: Competition;
-  season: Season;
+  season?: Season;
   status: MatchStatus;
   date: string;
   matchDay?: number | null;
   stage?: string | null;
   group?: string | null;
-  awayTeam: Team;
-  homeTeam: Team;
+  awayTeam: Team | null;
+  homeTeam: Team | null;
   score: Score;
 };
 

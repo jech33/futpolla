@@ -1,6 +1,9 @@
+/**
+ * Authentication state store using Zustand
+ * This store manages ONLY the auth state - side effects are handled in useInitializeAuth hook
+ */
+import { User } from 'firebase/auth';
 import { create } from 'zustand';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase/config';
 import { persist } from 'zustand/middleware';
 
 interface AuthState {
@@ -8,7 +11,10 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoadingSession: boolean;
 
-  initializeSession: () => () => void;
+  // Actions to update state (not side effects)
+  setUser: (user: User | null) => void;
+  clearUser: () => void;
+  setLoading: (loading: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -18,15 +24,24 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isLoadingSession: true,
 
-      initializeSession: () => {
-        return onAuthStateChanged(auth, (user) => {
-          set({
-            firebaseUser: user,
-            isAuthenticated: !!user,
-            isLoadingSession: false,
-          });
-        });
-      },
+      setUser: (user) =>
+        set({
+          firebaseUser: user,
+          isAuthenticated: !!user,
+          isLoadingSession: false,
+        }),
+
+      clearUser: () =>
+        set({
+          firebaseUser: null,
+          isAuthenticated: false,
+          isLoadingSession: false,
+        }),
+
+      setLoading: (loading) =>
+        set({
+          isLoadingSession: loading,
+        }),
     }),
     { name: 'user-storage' }
   )

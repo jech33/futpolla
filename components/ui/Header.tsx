@@ -1,18 +1,21 @@
 'use client';
-import { cn, containerClassName } from '@/lib/utils';
-import { Avatar, AvatarFallback, AvatarImage } from './Avatar';
 import { LogOutIcon, UserCircleIcon } from 'lucide-react';
+
+import { useCurrentUser } from '@/hooks/queries/useCurrentUser';
+import { cn, containerClassName } from '@/lib/utils';
+import { logoutFirebase } from '@/services/authServices';
+
+import { Avatar, AvatarFallback, AvatarImage } from './Avatar';
 import {
   DropdownMenu,
+  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuContent,
 } from './DropdownMenu';
-import { logoutFirebase } from '@/services/authServices';
-import { useCurrentUser } from '@/hooks/queries/useCurrentUser';
 
 export default function Header() {
   const { data: user } = useCurrentUser();
+
   return (
     <header className="sticky top-0 z-2 bg-black">
       <div

@@ -1,4 +1,5 @@
 import { StandingsList } from '@/components/ui/StandingsList';
+
 import { cn, containerClassName } from '@/lib/utils';
 
 export default function StandingsPage() {

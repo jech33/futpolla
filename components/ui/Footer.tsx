@@ -1,8 +1,8 @@
 'use client';
 
+import { CalendarDays, TableProperties, Trophy } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { CalendarDays, Trophy, TableProperties, User } from 'lucide-react';
 
 export function Footer() {
   const pathname = usePathname();

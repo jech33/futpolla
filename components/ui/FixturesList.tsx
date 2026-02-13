@@ -1,53 +1,43 @@
 'use client';
 
-import { FixtureCard } from './FixtureCard';
-import { Spinner } from './Spinner';
 import { useFixtures } from '@/hooks/queries/useFixtures';
+import { formatDate, groupFixturesByDate } from '@/lib/helpers/dateFormatter';
+
+import { DataLoader } from './DataLoader';
+import { FixtureCard } from './FixtureCard';
 
 export function FixturesList() {
-  const { data: fixtures, isLoading: isLoadingFixtures, isError, error } = useFixtures();
-
-  if (isLoadingFixtures) {
-    return <Spinner className="mx-auto my-12 size-24 text-slate-300" />;
-  }
-
-  if (isError) {
-    return <div className="text-center text-red-500">Error: {error.message}</div>;
-  }
-
-  if (!fixtures) {
-    return <div className="text-center text-gray-500">No fixtures available</div>;
-  }
+  const { data, isLoading, isError, error } = useFixtures();
 
   return (
-    <div className="space-y-4">
-      {fixtures.map((match, index) => {
-        const matchDate = new Date(match.date);
-        const currentDate = matchDate.toLocaleDateString(undefined, {
-          day: '2-digit',
-          month: 'short',
-        });
-        const previousDate =
-          index > 0
-            ? new Date(fixtures[index - 1].date).toLocaleDateString(undefined, {
-                day: '2-digit',
-                month: 'short',
-              })
-            : null;
-        const shouldRenderDate = currentDate !== previousDate;
+    <DataLoader
+      data={data}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      emptyComponent={<div className="py-12 text-center text-gray-500">No fixtures available</div>}
+    >
+      {(fixtures) => {
+        const groupedFixtures = groupFixturesByDate(fixtures);
+
         return (
-          <div key={match.id}>
-            {shouldRenderDate && (
-              <h2 className="mt-8 pb-2 text-start text-lg">
-                {matchDate.toLocaleDateString('en-US', {
-                  dateStyle: 'full',
-                })}
-              </h2>
-            )}
-            <FixtureCard match={match} />
+          <div className="space-y-4">
+            {groupedFixtures.map(({ date, matches }) => {
+              const firstMatch = matches[0];
+              if (!firstMatch) return null;
+
+              return (
+                <div key={date}>
+                  <h2 className="mt-8 pb-2 text-start text-lg">{formatDate(firstMatch.date)}</h2>
+                  {matches.map((match) => (
+                    <FixtureCard key={match.id} match={match} />
+                  ))}
+                </div>
+              );
+            })}
           </div>
         );
-      })}
-    </div>
+      }}
+    </DataLoader>
   );
 }

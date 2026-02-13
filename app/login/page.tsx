@@ -1,17 +1,23 @@
 'use client';
 
+import { useState } from 'react';
+
 import { cn } from '@/lib/utils';
 import { loginWithGoogle } from '@/services/authServices';
-import { useState } from 'react';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
+
   const handleLogin = async () => {
     setLoading(true);
     try {
       await loginWithGoogle();
+      // On success, user will be redirected by AuthGuard
     } catch (error) {
       console.error('Login error:', error);
+      // TODO: Show error toast/message to user
+    } finally {
+      // Always reset loading state
       setLoading(false);
     }
   };
@@ -28,7 +34,7 @@ export default function Login() {
           'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-green-500'
         )}
       >
-        Google Login
+        {loading ? 'Logging in...' : 'Google Login'}
       </button>
     </main>
   );

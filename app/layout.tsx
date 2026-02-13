@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import './globals.css';
+
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import { NextHydrationWaiter } from '@/components/auth/NextHydrationWaiter';
 import QueryProvider from '@/components/providers/QueryProvider';
+
+import './globals.css';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -26,11 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${poppins.className} antialiased`}>
-        <QueryProvider>
-          <NextHydrationWaiter>
-            <AuthGuard>{children}</AuthGuard>
-          </NextHydrationWaiter>
-        </QueryProvider>
+        <ErrorBoundary>
+          <QueryProvider>
+            <NextHydrationWaiter>
+              <AuthGuard>{children}</AuthGuard>
+            </NextHydrationWaiter>
+          </QueryProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

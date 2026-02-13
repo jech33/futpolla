@@ -1,4 +1,7 @@
+import Image from 'next/image';
+
 import { GroupTable as GroupTableType } from '@/types';
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './Table';
 
 export function GroupTable(props: GroupTableType) {
@@ -23,8 +26,20 @@ export function GroupTable(props: GroupTableType) {
           <TableRow key={team.team.id || `${group}-team-${idx}`} className="h-12">
             <TableCell>{team.position}</TableCell>
             <TableCell className="w-full pl-0">
-              <div className="flex h-full gap-3">
-                <img src={team.team.logo} alt={team.team.name} className="h-auto w-5" />
+              <div className="flex h-full gap-3 items-center">
+                {!team?.team?.logo ? (
+                  <div className="flex w-5 h-4 items-center justify-center bg-gray-200 text-xs text-gray-500">
+                    ?
+                  </div>
+                ) : (
+                  <Image
+                    src={team.team.logo}
+                    alt={team?.team?.name || 'Team'}
+                    width={20}
+                    height={20}
+                    className="h-auto w-5"
+                  />
+                )}
                 <span>{team.team.code || 'TBD'}</span>
               </div>
             </TableCell>

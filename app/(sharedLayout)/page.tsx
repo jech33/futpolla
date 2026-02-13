@@ -1,5 +1,6 @@
-import { FixturesList } from '@/components/ui/FixturesList';
 import { Countdown } from '@/components/ui/Countdown';
+import { FixturesList } from '@/components/ui/FixturesList';
+
 import { containerClassName } from '@/lib/utils';
 
 export default function Home() {
