@@ -5,9 +5,10 @@ import { useCallback, useState } from 'react';
 
 import { PREDICTION_CONSTRAINTS } from '@/lib/constants/validation';
 import { cn } from '@/lib/utils';
+import { Fixture } from '@/types';
 
 interface PredictionProps {
-  matchId: string;
+  matchId: Fixture['id'];
   initialHome?: number;
   initialAway?: number;
   isLocked?: boolean;

@@ -9,7 +9,7 @@ import { calculateTimeUntil } from '@/lib/helpers/dateFormatter';
 import { cn, containerClassName } from '@/lib/utils';
 
 export function Countdown() {
-  const { data: fixtures } = useFixtures();
+  const { data: fixtures, isLoading } = useFixtures();
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -35,7 +35,7 @@ export function Countdown() {
     return () => clearInterval(timer);
   }, []);
 
-  if (!isMounted) return null;
+  if (!isMounted || isLoading) return null;
 
   return (
     <div className="w-full bg-cyan-300 py-6">
@@ -74,10 +74,12 @@ function TimeBox({ value, label }: { value: number; label: string }) {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <span className="font-mono text-xl font-bold tracking-tight tabular-nums sm:text-3xl md:text-4xl">
+      <span className="text-center font-mono text-xl font-bold tracking-tight tabular-nums sm:text-3xl md:text-4xl">
         {formattedValue}
       </span>
-      <span className="mt-2 text-[10px] font-bold tracking-widest md:text-xs">{label}</span>
+      <span className="mt-2 text-center text-[10px] font-bold tracking-widest sm:min-w-9.5 md:min-w-11.5 md:text-xs">
+        {label}
+      </span>
     </div>
   );
 }

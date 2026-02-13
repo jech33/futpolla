@@ -1,9 +1,9 @@
 'use client';
 import { LogOutIcon, UserCircleIcon } from 'lucide-react';
 
-import { useCurrentUser } from '@/hooks/queries/useCurrentUser';
 import { cn, containerClassName } from '@/lib/utils';
 import { logoutFirebase } from '@/services/authServices';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 import { Avatar, AvatarFallback, AvatarImage } from './Avatar';
 import {
@@ -14,7 +14,7 @@ import {
 } from './DropdownMenu';
 
 export default function Header() {
-  const { data: user } = useCurrentUser();
+  const user = useAuthStore().firebaseUser;
 
   return (
     <header className="sticky top-0 z-2 bg-black">
@@ -27,7 +27,11 @@ export default function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="size-10! cursor-pointer">
-              <AvatarImage src={user?.photoURL} alt="user-avatar" referrerPolicy="no-referrer" />
+              <AvatarImage
+                src={user?.photoURL || undefined}
+                alt="user-avatar"
+                referrerPolicy="no-referrer"
+              />
               <AvatarFallback>
                 <UserCircleIcon />
               </AvatarFallback>

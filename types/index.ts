@@ -72,7 +72,7 @@ export enum MatchStatus {
 }
 
 export type Fixture = {
-  id: string;
+  id: string | number;
   competition: Competition;
   season?: Season;
   status: MatchStatus;

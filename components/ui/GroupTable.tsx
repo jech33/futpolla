@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import { GroupTable as GroupTableType } from '@/types';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './Table';
@@ -32,12 +30,11 @@ export function GroupTable(props: GroupTableType) {
                     ?
                   </div>
                 ) : (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={team.team.logo}
                     alt={team?.team?.name || 'Team'}
-                    width={20}
-                    height={20}
-                    className="h-auto w-5"
+                    className="w-5 h-auto"
                   />
                 )}
                 <span>{team.team.code || 'TBD'}</span>

@@ -29,7 +29,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     }
   }, [isAuthenticated, isLoadingSession, pathname, router]);
 
-  if (isLoadingSession) {
+  if (!isAuthenticated && isLoadingSession) {
     return (
       <div className="flex min-h-screen animate-pulse flex-col items-center justify-center gap-5 bg-slate-950">
         <h1 className="text-4xl font-black tracking-tighter text-white italic">

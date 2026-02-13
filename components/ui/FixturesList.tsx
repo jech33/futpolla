@@ -29,9 +29,11 @@ export function FixturesList() {
               return (
                 <div key={date}>
                   <h2 className="mt-8 pb-2 text-start text-lg">{formatDate(firstMatch.date)}</h2>
-                  {matches.map((match) => (
-                    <FixtureCard key={match.id} match={match} />
-                  ))}
+                  <div className="space-y-5">
+                    {matches.map((match) => (
+                      <FixtureCard key={match.id} match={match} />
+                    ))}
+                  </div>
                 </div>
               );
             })}
