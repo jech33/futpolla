@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { QUERY_CONFIG, QUERY_KEYS } from '@/lib/constants/query';
-import { getUserProfile } from '@/services/authServices';
+import { getUserProfileUseCase } from '@/composition/client';
+import { QUERY_CONFIG, QUERY_KEYS } from '@/hooks/queryConfig';
 import { useAuthStore } from '@/stores/useAuthStore';
 
 /**
@@ -15,7 +15,7 @@ export function useCurrentUser() {
     queryKey: QUERY_KEYS.userProfile(firebaseUser?.uid),
     queryFn: async () => {
       if (!firebaseUser?.uid) return null;
-      return await getUserProfile(firebaseUser.uid);
+      return await getUserProfileUseCase.execute(firebaseUser.uid);
     },
     enabled: isAuthenticated && !!firebaseUser?.uid,
     ...QUERY_CONFIG.userProfile,

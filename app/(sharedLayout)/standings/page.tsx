@@ -1,4 +1,4 @@
-import { StandingsList } from '@/components/ui/StandingsList';
+import { StandingsList } from '@/components/features/StandingsList';
 
 import { cn, containerClassName } from '@/lib/utils';
 

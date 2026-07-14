@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { QUERY_CONFIG, QUERY_KEYS } from '@/lib/constants/query';
-import { getStandings } from '@/services/standingsServices';
+import { getStandingsUseCase } from '@/composition/client';
+import { QUERY_CONFIG, QUERY_KEYS } from '@/hooks/queryConfig';
 
 export function useStandings() {
   return useQuery({
     queryKey: QUERY_KEYS.standings,
-    queryFn: getStandings,
+    queryFn: () => getStandingsUseCase.execute(),
     ...QUERY_CONFIG.standings,
   });
 }

@@ -3,8 +3,9 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+import { PUBLIC_ROUTES } from '@/components/auth/routes';
+
 import { useInitializeAuth } from '@/hooks/useInitializeAuth';
-import { PUBLIC_ROUTES } from '@/lib/constants/routes';
 import { useAuthStore } from '@/stores/useAuthStore';
 
 import { Spinner } from '../ui/Spinner';

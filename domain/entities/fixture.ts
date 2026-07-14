@@ -1,0 +1,69 @@
+export type Competition = {
+  id: string | number;
+  name: string;
+  code: string;
+  logo: string;
+};
+
+export type Season = {
+  id: string;
+  startDate: string;
+  endDate: string;
+  currentMatchday: number;
+  winner?: string | null;
+};
+
+export type Team = {
+  id?: string | number | null;
+  name?: string | null;
+  code?: string | null;
+  type?: string;
+  logo?: string | null;
+};
+
+export type Score = {
+  winner: string | null;
+  duration: string;
+  fullTime: {
+    home: number | null;
+    away: number | null;
+  };
+  halfTime: {
+    home: number | null;
+    away: number | null;
+  };
+  regularTime: {
+    home: number | null;
+    away: number | null;
+  };
+  penalties: {
+    home: number | null;
+    away: number | null;
+  } | null;
+};
+
+export enum MatchStatus {
+  SCHEDULED = 'SCHEDULED',
+  TIMED = 'TIMED',
+  IN_PLAY = 'IN_PLAY',
+  PAUSED = 'PAUSED',
+  FINISHED = 'FINISHED',
+  POSTPONED = 'POSTPONED',
+  SUSPENDED = 'SUSPENDED',
+  CANCELLED = 'CANCELLED',
+  AWARDED = 'AWARDED',
+}
+
+export type Fixture = {
+  id: string | number;
+  competition: Competition;
+  season?: Season;
+  status: MatchStatus;
+  date: string;
+  matchDay?: number | null;
+  stage?: string | null;
+  group?: string | null;
+  awayTeam: Team | null;
+  homeTeam: Team | null;
+  score: Score;
+};

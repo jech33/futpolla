@@ -4,15 +4,15 @@
  */
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { QUERY_KEYS } from '@/lib/constants/query';
-import { logger } from '@/lib/helpers/logger';
-import { syncUserProfile } from '@/services/authServices';
+import { syncUserProfileUseCase } from '@/composition/client';
+import { QUERY_KEYS } from '@/hooks/queryConfig';
+import { logger } from '@/lib/logger';
 
 export function useSyncUserProfile() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: syncUserProfile,
+    mutationFn: syncUserProfileUseCase.execute,
     onSuccess: (data) => {
       logger.info('User profile synced successfully', {
         context: 'useSyncUserProfile',

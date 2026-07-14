@@ -2,17 +2,18 @@
  * Authentication state store using Zustand
  * This store manages ONLY the auth state - side effects are handled in useInitializeAuth hook
  */
-import { User } from 'firebase/auth';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { AuthUser } from '@/ports/outbound/AuthProvider';
+
 interface AuthState {
-  firebaseUser: User | null;
+  firebaseUser: AuthUser | null;
   isAuthenticated: boolean;
   isLoadingSession: boolean;
 
   // Actions to update state (not side effects)
-  setUser: (user: User | null) => void;
+  setUser: (user: AuthUser | null) => void;
   clearUser: () => void;
   setLoading: (loading: boolean) => void;
 }

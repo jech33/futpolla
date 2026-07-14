@@ -6,3 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const containerClassName = 'container mx-auto px-6';
+
+export const specialCharsToSpace = (value: string): string => {
+  return value.replace(/[-_]/g, ' ').toLowerCase();
+};

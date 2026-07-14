@@ -6,11 +6,10 @@
 
 'use client';
 
-import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 
-import { auth } from '@/lib/firebase/config';
-import { logger } from '@/lib/helpers/logger';
+import { authProvider } from '@/composition/client';
+import { logger } from '@/lib/logger';
 import { useAuthStore } from '@/stores/useAuthStore';
 
 import { useSyncUserProfile } from './mutations/useSyncUserProfile';
@@ -28,8 +27,7 @@ export const useInitializeAuth = () => {
 
     setLoading(true);
 
-    const unsubscribe = onAuthStateChanged(
-      auth,
+    const unsubscribe = authProvider.onAuthStateChanged(
       (user) => {
         if (user) {
           logger.info('User authenticated', {

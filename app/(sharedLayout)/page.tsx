@@ -1,5 +1,5 @@
-import { Countdown } from '@/components/ui/Countdown';
-import { FixturesList } from '@/components/ui/FixturesList';
+import { Countdown } from '@/components/features/Countdown';
+import { FixturesList } from '@/components/features/FixturesList';
 
 import { containerClassName } from '@/lib/utils';
 

@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
+import { authenticateUserUseCase } from '@/composition/client';
 import { cn } from '@/lib/utils';
-import { loginWithGoogle } from '@/services/authServices';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -11,7 +11,7 @@ export default function Login() {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      await loginWithGoogle();
+      await authenticateUserUseCase.execute();
       // On success, user will be redirected by AuthGuard
     } catch (error) {
       console.error('Login error:', error);
